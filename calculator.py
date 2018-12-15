@@ -31,7 +31,7 @@ class CalculatorClass(QMainWindow):
         uic.loadUi("calculatorDesigne.ui", self)
 
     def display(self, value):  # Показывает вводимые символы на "экранчик"
-        self.result_show.insert(value)  # Последовательный ввод символов
+        self.result_show.setText(value)  # Последовательный ввод символов
 
     def calculation(self, val1, val2, operator):
         val1 = float(val1)
