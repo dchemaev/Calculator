@@ -21,14 +21,14 @@ class CalculatorClass(QMainWindow):
         self.pushButton_8.clicked.connect(lambda: self.display("8"))
         self.pushButton_9.clicked.connect(lambda: self.display("9"))
 
-        self.pushButton_plus.clicked.connect(lambda: self.display("+"))
-        self.pushButton_min.clicked.connect(lambda: self.display("-"))
-        self.pushButton_umnozhit.clicked.connect(lambda: self.display("*"))
-        self.pushButton_delenie.clicked.connect(lambda: self.display("/"))
+        self.pushButton_plus.clicked.connect(lambda: self.display(" + "))
+        self.pushButton_min.clicked.connect(lambda: self.display(" - "))
+        self.pushButton_umnozhit.clicked.connect(lambda: self.display(" * "))
+        self.pushButton_delenie.clicked.connect(lambda: self.display(" / "))
 
-        # self.pushButton_ravno.clicked.connect(self.calculation())
+        self.pushButton_ravno.clicked.connect(self.calculation)
 
-        # self.pushButton_del.clicked.connect(self.display.clear()) Нужно сделать очистку экрана
+        #  self.pushButton_del.clicked.connect(self.display.clear)  # Нужно сделать очистку экрана
 
     def initUI(self):
         uic.loadUi("calculatorDesigne.ui", self)
@@ -36,7 +36,7 @@ class CalculatorClass(QMainWindow):
     def display(self, value):  # Показывает вводимые символы на "экранчик"
         self.result_show.setText(self.result_show.toPlainText() + value)  # Последовательный ввод символов
 
-    def calculation(self, val1, val2, operator):
+    def calculation(self, val1, val2, operator):  # Получаем значение переменных с "Экранчика"
         screen_value = str(self.result_show.text().split(" "))
         val1 = float(screen_value[0])
         operator = screen_value[1]
@@ -44,7 +44,7 @@ class CalculatorClass(QMainWindow):
         result = self.maths(val1, operator, val2)
         self.result_show.setText(str(result))
 
-    def maths(self, val1, val2, operator):
+    def maths(self, val1, val2, operator):  # Рассчёты
         val1 = float(val1)
         val2 = float(val2)
         if operator is "+":
