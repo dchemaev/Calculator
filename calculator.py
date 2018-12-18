@@ -39,10 +39,12 @@ class CalculatorClass(QMainWindow):
         self.result_show.setText(self.result_show.toPlainText() + value)  # Последовательный ввод символов
 
     def calculation(self):  # Получаем значение переменных с "Экранчика"
-        screen_value = str(self.result_show.toPlainText().split(" "))
+        screen_value = self.result_show.toPlainText().split(" ")
+
         val1 = float(screen_value[0])
         operator = screen_value[1]
         val2 = float(screen_value[2])
+        print(val1, val2, operator)
         result = self.maths(val1, val2, operator)
         self.result_show.setText(str(result))
 
