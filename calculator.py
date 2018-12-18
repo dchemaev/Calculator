@@ -1,5 +1,6 @@
 import sys
 
+
 from PyQt5 import QtGui, uic
 from PyQt5.QtWidgets import QMainWindow, QApplication, QLineEdit
 
@@ -25,7 +26,7 @@ class CalculatorClass(QMainWindow):
         self.pushButton_umnozhit.clicked.connect(lambda: self.display("*"))
         self.pushButton_delenie.clicked.connect(lambda: self.display("/"))
 
-        #self.pushButton_ravno.clicked.connect(self.calculation())
+        # self.pushButton_ravno.clicked.connect(self.calculation())
 
         # self.pushButton_del.clicked.connect(self.display.clear()) Нужно сделать очистку экрана
 
@@ -33,26 +34,27 @@ class CalculatorClass(QMainWindow):
         uic.loadUi("calculatorDesigne.ui", self)
 
     def display(self, value):  # Показывает вводимые символы на "экранчик"
-        v = []
-        v.append(list(value))
-        self.result_show.setText(list(v))  # Последовательный ввод символов
+        self.result_show.setText(self.result_show.toPlainText() + value)  # Последовательный ввод символов
 
-
-    #def calculation(self):
-
-"""""
     def calculation(self, val1, val2, operator):
+        screen_value = str(self.result_show.text().split(" "))
+        val1 = float(screen_value[0])
+        operator = screen_value[1]
+        val2 = float(screen_value[0])
+        result = self.maths(val1, operator, val2)
+        self.result_show.setText(str(result))
+
+    def maths(self, val1, val2, operator):
         val1 = float(val1)
         val2 = float(val2)
-        if operator is "sum":
+        if operator is "+":
             return val1 + val2
-        elif operator is "min":
+        elif operator is "-":
             return val1 - val2
-        elif operator is "del":
+        elif operator is "/":
             return val1 / val2
-        elif operator is "umn":
+        elif operator is "*":
             return val1 * val2
-    """""
 
 
 if __name__ == "__main__":   # Обработка клацаний юзера
