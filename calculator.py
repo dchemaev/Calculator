@@ -28,6 +28,8 @@ class CalculatorClass(QMainWindow):
 
         self.pushButton_ravno.clicked.connect(self.calculation)
 
+        self.result_show.setReadOnly(True)  # Нельзя ничего добавить в дисплей с клавиатуры
+
         #  self.pushButton_del.clicked.connect(self.display.clear)  # Нужно сделать очистку экрана
 
     def initUI(self):
@@ -36,25 +38,26 @@ class CalculatorClass(QMainWindow):
     def display(self, value):  # Показывает вводимые символы на "экранчик"
         self.result_show.setText(self.result_show.toPlainText() + value)  # Последовательный ввод символов
 
-    def calculation(self, val1, val2, operator):  # Получаем значение переменных с "Экранчика"
-        screen_value = str(self.result_show.text().split(" "))
+    def calculation(self):  # Получаем значение переменных с "Экранчика"
+        screen_value = str(self.result_show.toPlainText().split(" "))
         val1 = float(screen_value[0])
         operator = screen_value[1]
-        val2 = float(screen_value[0])
-        result = self.maths(val1, operator, val2)
+        val2 = float(screen_value[2])
+        result = self.maths(val1, val2, operator)
         self.result_show.setText(str(result))
 
     def maths(self, val1, val2, operator):  # Рассчёты
         val1 = float(val1)
         val2 = float(val2)
         if operator is "+":
-            return val1 + val2
+            return(val1 + val2)
         elif operator is "-":
             return val1 - val2
         elif operator is "/":
             return val1 / val2
         elif operator is "*":
             return val1 * val2
+
 
 
 if __name__ == "__main__":   # Обработка клацаний юзера
