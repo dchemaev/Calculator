@@ -40,18 +40,19 @@ class CalculatorClass(QMainWindow):
 
     def calculation(self):  # Получаем значение переменных с "Экранчика"
         screen_value = self.result_show.toPlainText().split(" ")
-
         val1 = float(screen_value[0])
         operator = screen_value[1]
         val2 = float(screen_value[2])
         result = self.maths(val1, val2, operator)
+        if result == int(result):
+            result = int(result)
         self.result_show.setText(str(result))
 
     def maths(self, val1, val2, operator):  # Рассчёты
         val1 = float(val1)
         val2 = float(val2)
         if operator is "+":
-            return(val1 + val2)
+            return val1 + val2
         elif operator is "-":
             return val1 - val2
         elif operator is "/":
