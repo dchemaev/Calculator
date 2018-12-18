@@ -25,14 +25,22 @@ class CalculatorClass(QMainWindow):
         self.pushButton_umnozhit.clicked.connect(lambda: self.display("*"))
         self.pushButton_delenie.clicked.connect(lambda: self.display("/"))
 
+        #self.pushButton_ravno.clicked.connect(self.calculation())
+
         # self.pushButton_del.clicked.connect(self.display.clear()) Нужно сделать очистку экрана
 
     def initUI(self):
         uic.loadUi("calculatorDesigne.ui", self)
 
     def display(self, value):  # Показывает вводимые символы на "экранчик"
-        self.result_show.setText(value)  # Последовательный ввод символов
+        v = []
+        v.append(list(value))
+        self.result_show.setText(list(v))  # Последовательный ввод символов
 
+
+    #def calculation(self):
+
+"""""
     def calculation(self, val1, val2, operator):
         val1 = float(val1)
         val2 = float(val2)
@@ -44,6 +52,7 @@ class CalculatorClass(QMainWindow):
             return val1 / val2
         elif operator is "umn":
             return val1 * val2
+    """""
 
 
 if __name__ == "__main__":   # Обработка клацаний юзера
