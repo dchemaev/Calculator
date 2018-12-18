@@ -44,7 +44,6 @@ class CalculatorClass(QMainWindow):
         val1 = float(screen_value[0])
         operator = screen_value[1]
         val2 = float(screen_value[2])
-        print(val1, val2, operator)
         result = self.maths(val1, val2, operator)
         self.result_show.setText(str(result))
 
