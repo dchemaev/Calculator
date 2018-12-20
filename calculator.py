@@ -40,27 +40,55 @@ class CalculatorClass(QMainWindow):
         self.result_show.setText(self.result_show.toPlainText() + value)  # Последовательный ввод символов
 
     def calculation(self):  # Получаем значение переменных с "Экранчика"
-        screen_value = self.result_show.toPlainText().split(" ")
-        val1 = float(screen_value[0])
-        operator = screen_value[1]
-        val2 = float(screen_value[2])
-        result = self.maths(val1, val2, operator)
-        if result == int(result):
-            result = int(result)
-        self.result_show.setText(str(result))
+        expression = CalculationClass()
+        expression.set_text(self.result_show.toPlainText().split(" "))
+        expression.read_text()
+        self.result_show.setText(str(expression.result))
 
-    def maths(self, val1, val2, operator):  # Рассчёты
-        val1 = float(val1)
-        val2 = float(val2)
-        if operator is "+":
-            return val1 + val2
-        elif operator is "-":
-            return val1 - val2
-        elif operator is "/":
-            return val1 / val2
-        elif operator is "*":
-            return val1 * val2
 
+class CalculationClass:             # класс вычисляющий значения
+    def __init__(self):
+        super().__init__()
+        self.result = 0
+        self.value1 = 0
+        self.value2 = 0
+        self.operator = ''
+
+    def set_text(self, text):       # задаем выражение для вычисления в виде списка
+        self.text = text
+
+    def math(self):                 # вычисляем значения
+        if self.operator is "+":
+            self.result = self.value1 + self.value2
+            print(self.result)
+        elif self.operator is "-":
+            self.result = self.value1 - self.value2
+        elif self.operator is "/":
+            self.result = self.value1 / self.value2
+        elif self.operator is "*":
+            self.result = self.value1 * self.value2
+        self.value1 = self.result
+
+    def read_text(self):            # разбираем сложное выражение на простые
+        try:
+            for i in range(len(self.text)):
+                if i % 2 == 0:
+                    if self.value2 == 0:
+                        self.value2 = float(self.text[i])
+                    else:
+                        if self.value1 == 0:
+                            self.value1 = self.value2
+                        self.value2 = float(self.text[i])
+                        self.math()
+                else:
+                    if self.operator == '':
+                        self.operator = self.text[i]
+                    else:
+                        self.operator = self.text[i]
+                print(self.result, self.value1, self.value2, self.operator)
+
+        except Exception:
+            self.result = 'ERROR'
 
 
 if __name__ == "__main__":   # Обработка клацаний юзера
