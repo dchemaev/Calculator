@@ -25,6 +25,7 @@ class CalculatorClass(QMainWindow):
         self.pushButton_min.clicked.connect(lambda: self.display(" - "))
         self.pushButton_umnozhit.clicked.connect(lambda: self.display(" * "))
         self.pushButton_delenie.clicked.connect(lambda: self.display(" / "))
+        self.pushButton_dot.clicked.connect(lambda: self.display('.'))
 
         self.pushButton_ravno.clicked.connect(self.calculation)
 
