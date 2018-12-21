@@ -5,7 +5,7 @@ from PyQt5 import QtGui, uic
 from PyQt5.QtWidgets import QMainWindow, QApplication, QLineEdit
 
 
-class CalculatorClass(QMainWindow):
+class Main(QMainWindow):
     def __init__(self):
         super().__init__()
         uic.loadUi("calculatorDesigne.ui", self)
@@ -60,7 +60,6 @@ class CalculationClass:             # класс вычисляющий знач
     def math(self):                 # вычисляем значения
         if self.operator is "+":
             self.result = self.value1 + self.value2
-            print(self.result)
         elif self.operator is "-":
             self.result = self.value1 - self.value2
         elif self.operator is "/":
@@ -85,7 +84,6 @@ class CalculationClass:             # класс вычисляющий знач
                         self.operator = self.text[i]
                     else:
                         self.operator = self.text[i]
-                print(self.result, self.value1, self.value2, self.operator)
 
         except Exception:
             self.result = 'ERROR'
@@ -93,6 +91,6 @@ class CalculationClass:             # класс вычисляющий знач
 
 if __name__ == "__main__":   # Обработка клацаний юзера
     app = QApplication(sys.argv)
-    calc = CalculatorClass()
+    calc = Main()
     calc.show()
     sys.exit(app.exec())
