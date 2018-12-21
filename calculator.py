@@ -70,6 +70,8 @@ class CalculationClass:             # класс вычисляющий знач
         elif self.operator is "*":
             self.result = self.value1 * self.value2
         self.value1 = self.result
+        if self.result == int(self.result):
+            self.result = int(self.result)
 
     def read_text(self):            # разбираем сложное выражение на простые
         try:
@@ -87,7 +89,6 @@ class CalculationClass:             # класс вычисляющий знач
                         self.operator = self.text[i]
                     else:
                         self.operator = self.text[i]
-
         except Exception:
             self.result = 'ERROR'
 
