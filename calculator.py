@@ -31,7 +31,7 @@ class Main(QMainWindow):
 
         self.result_show.setReadOnly(True)  # Нельзя ничего добавить в дисплей с клавиатуры
 
-        #  self.pushButton_del.clicked.connect(self.display.clear)  # Нужно сделать очистку экрана
+        self.pushButton_del.clicked.connect(lambda: self.clear())  # Нужно сделать очистку экрана
 
     def initUI(self):
         uic.loadUi("calculatorDesigne.ui", self)
@@ -44,6 +44,9 @@ class Main(QMainWindow):
         expression.set_text(self.result_show.toPlainText().split(" "))
         expression.read_text()
         self.result_show.setText(str(expression.result))
+
+    def clear(self):
+        self.result_show.setText("")
 
 
 class CalculationClass:             # класс вычисляющий значения
