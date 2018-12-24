@@ -1115,7 +1115,7 @@
       </widget>
      </item>
      <item row="0" column="7">
-      <widget class="QPushButton" name="pushButton_step4">
+      <widget class="QPushButton" name="pushButton_stepn">
        <property name="palette">
         <palette>
          <active>
@@ -1162,7 +1162,7 @@
         </font>
        </property>
        <property name="text">
-        <string>X^4</string>
+        <string>X^n</string>
        </property>
       </widget>
      </item>

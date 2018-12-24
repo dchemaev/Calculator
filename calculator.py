@@ -19,21 +19,31 @@ class Main(QMainWindow):
         self.pushButton_7.clicked.connect(lambda: self.display("7"))
         self.pushButton_8.clicked.connect(lambda: self.display("8"))
         self.pushButton_9.clicked.connect(lambda: self.display("9"))
+        self.pushButton_dot.clicked.connect(lambda: self.display("."))
 
         self.pushButton_plus.clicked.connect(lambda: self.display(" + "))
         self.pushButton_min.clicked.connect(lambda: self.display(" - "))
         self.pushButton_umnozhit.clicked.connect(lambda: self.display(" * "))
         self.pushButton_delenie.clicked.connect(lambda: self.display(" / "))
+
         self.pushButton_sin.clicked.connect(lambda: self.display(' sin ( '))
         self.pushButton_cos.clicked.connect(lambda: self.display(' cos ( '))
         self.pushButton_tan.clicked.connect(lambda: self.display(' tg ( '))
-        self.pushButton_atan.clicked.connect(lambda: self.display(' ctg ( '))
+        self.pushButton_atan.clicked.connect(lambda: self.display(' atan ( '))
+
+        self.pushButton_asin.clicked.connect(lambda: self.display(' asin ( '))
+        self.pushButton_acos.clicked.connect(lambda: self.display(' acos ( '))
+        self.pushButton_atan.clicked.connect(lambda: self.display(' atg ( '))
+
         self.pushButton_fact.clicked.connect(lambda: self.display(' ! '))
+
         self.pushButton_step2.clicked.connect(lambda: self.display(' ^ 2'))
         self.pushButton_step3.clicked.connect(lambda: self.display(' ^ 3'))
-        self.pushButton_step4.clicked.connect(lambda: self.display(' ^ 4'))
+        self.pushButton_stepn.clicked.connect(lambda: self.display(' ^ '))
+
         self.pushButton_percent.clicked.connect(lambda: self.display(' % '))
         self.pushButton_koren.clicked.connect(lambda: self.display(' √ '))
+
         self.pushButton_inverse_bracket.clicked.connect(lambda: self.display(' ) '))
         self.pushButton_bracket.clicked.connect(lambda: self.display(' ( '))
 
@@ -59,7 +69,7 @@ class Main(QMainWindow):
         rez = expression.reader()
         self.result_show.setText(str(*rez))
 
-    def clear(self, rez): # очистак дисплейчика
+    def clear(self, rez):  # очистка дисплейчика
         if rez:
             self.result_show.setText("")
         else:
@@ -82,7 +92,7 @@ class CalculationClass:  # класс вычисляющий значения
         else:
             return a * self.fast_degree(a, n - 1)
 
-    def prime_function(self, val1, val2, operator):  # вычисляем значения
+    def prime_function(self, val1, val2, operator):  # вычисляем значения простых функций
         result = 0
         if operator is '+':
             result = val1 + val2
@@ -96,25 +106,30 @@ class CalculationClass:  # класс вычисляющий значения
             result = self.fast_degree(val1, val2)
         return self.round(result)
 
-    def hard_function(self, val3, operator):
+    def hard_function(self, val3, operator):  # вычисляем значения сложных функций
         if operator == 'sin':
             result = math.sin(math.radians(val3))
         if operator == 'cos':
             result = math.cos(math.radians(val3))
-        if operator == 'tg':
+        if operator == 'tan':
             result = math.tan(math.radians(val3))
         if operator == 'ctg':
             result = 1 / math.tan(math.radians(val3))
+        if operator == 'asin':
+            result = math.asin(val3)
         if operator == '!':
             result = math.factorial(val3)
         if operator == '%':
             result = self.prime_function(val3, 100, '/')
         if operator == '√':
             result = math.sqrt(val3)
-        return self.round(result)
+        if int(result) == result:
+            return int(result)
+        else:
+            return self.round(result)
 
-    def round(self, result):
-        return round(result, 7)
+    def round(self, result):  # Округление
+            return round(result, 7)
 
 
 class ReversePolishNotationClass:
