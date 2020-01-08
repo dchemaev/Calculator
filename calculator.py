@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import QMainWindow, QApplication
 class Main(QMainWindow):
     def __init__(self):
         super().__init__()
-        uic.loadUi("calculatorDesigne.ui", self)
+        uic.loadUi("calculatorDesign.ui", self)
         self.initUI()
         self.pushButton_0.clicked.connect(lambda: self.display("0"))
         self.pushButton_1.clicked.connect(lambda: self.display("1"))
@@ -46,7 +46,7 @@ class Main(QMainWindow):
         self.pushButton_del_2.clicked.connect(lambda: self.clear(False))
 
     def initUI(self):
-        uic.loadUi("calculatorDesigne.ui", self)
+        uic.loadUi("calculatorDesign.ui", self)
 
     def display(self, value):  # Показывает вводимые символы на "экранчик"
         self.result_show.setText(self.result_show.toPlainText() + value)  # Последовательный ввод символов
@@ -86,18 +86,18 @@ class CalculationClass:  # класс вычисляющий значения
 
     def prime_function(self, val1, val2, operator):  # вычисляем значения выражений с двумя переменными
         result = 0
-        if operator is '+':
+        if operator == '+':
             result = val1 + val2
-        elif operator is '-':
+        elif operator == '-':
             result = val1 - val2
-        elif operator is '/':
+        elif operator == '/':
             if val2 == 0:
                 return 'ERROR'
             else:
                 result = val1 / val2
-        elif operator is '*':
+        elif operator == '*':
             result = val1 * val2
-        elif operator is '^':
+        elif operator == '^':
             if val2 == abs(int(val2)):
                 result = self.fast_degree(val1, val2)
             else:
@@ -206,7 +206,6 @@ class ReaderClass(CalculationClass):
             i = 0
             while i < len(self.RPN) > 1:
                 if not str(self.RPN[i]).isdigit() and '.' not in str(self.RPN[i]):
-                    print(i)
                     if self.RPN[i] in '+ - * / ^':  # вычисляем значения выражений с двумя переменными
                         self.val1 = self.RPN[i - 2]
                         self.val2 = self.RPN[i - 1]
