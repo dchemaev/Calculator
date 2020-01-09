@@ -22,23 +22,31 @@ class Main(QMainWindow):
 
         self.pushButton_plus.clicked.connect(lambda: self.display(" + "))
         self.pushButton_min.clicked.connect(lambda: self.display(" - "))
-        self.pushButton_umnozhit.clicked.connect(lambda: self.display(" * "))
+        self.pushButton_multiply.clicked.connect(lambda: self.display(" * "))
         self.pushButton_delenie.clicked.connect(lambda: self.display(" / "))
-        self.pushButton_sin.clicked.connect(lambda: self.display(' sin ( '))
-        self.pushButton_cos.clicked.connect(lambda: self.display(' cos ( '))
-        self.pushButton_tan.clicked.connect(lambda: self.display(' tg ( '))
-        self.pushButton_atan.clicked.connect(lambda: self.display(' ctg ( '))
+
+        self.pushButton_sin.clicked.connect(lambda: self.display('sin ( '))
+        self.pushButton_cos.clicked.connect(lambda: self.display('cos ( '))
+        self.pushButton_tan.clicked.connect(lambda: self.display('tg ( '))
+        self.pushButton_cot.clicked.connect(lambda: self.display('ctg ( '))
+
+        self.pushButton_asin.clicked.connect(lambda: self.display('arcsin ( '))
+        self.pushButton_acos.clicked.connect(lambda: self.display('arccos ( '))
+        self.pushButton_atan.clicked.connect(lambda: self.display('arctg ( '))
+        self.pushButton_acot.clicked.connect(lambda: self.display('arcctg ( '))
+
+        self.pushButton_inverse_bracket.clicked.connect(lambda: self.display(' ) '))
+        self.pushButton_bracket.clicked.connect(lambda: self.display(' ( '))
+        self.pushButton_dot.clicked.connect(lambda: self.display('.'))
+
         self.pushButton_fact.clicked.connect(lambda: self.display(' ! '))
         self.pushButton_step2.clicked.connect(lambda: self.display(' ^ 2'))
         self.pushButton_step3.clicked.connect(lambda: self.display(' ^ 3'))
         self.pushButton_stepn.clicked.connect(lambda: self.display(' ^ '))
         self.pushButton_percent.clicked.connect(lambda: self.display(' % '))
         self.pushButton_koren.clicked.connect(lambda: self.display(' √ '))
-        self.pushButton_inverse_bracket.clicked.connect(lambda: self.display(' ) '))
-        self.pushButton_bracket.clicked.connect(lambda: self.display(' ( '))
-        self.pushButton_dot.clicked.connect(lambda: self.display('.'))
 
-        self.pushButton_ravno.clicked.connect(self.calculation)
+        self.pushButton_equal.clicked.connect(self.calculation)
 
         self.result_show.setReadOnly(True)  # Нельзя ничего добавить в дисплей с клавиатуры
 
@@ -54,14 +62,21 @@ class Main(QMainWindow):
     def calculation(self):  # Получаем значение переменных с "Экранчика"
         text = ReversePolishNotationClass(self.result_show.toPlainText().split())
         # создает список для обработи обратной польской натации
+        # ОПН - Обратная Польская Нотация
         text.process_1()  # в ReversePolishNotationClass производим предворительную обработку для ОПН
         text = text.process_2()  # производим обработку списка ОПН
         expression = ReaderClass()  # создаем список для чтения и вычисления выражения на ОПН
         expression.set_expression(text)  # в список кладем выражение на ОПН
         rez = expression.reader()  # читаем, по ходу чтения вычисляем значеия действий
-        self.result_show.setText(str(*rez))  # выводим ответ на экран
 
-    def clear(self, rez):  # очистак дисплейчика
+        if rez == ['ERROR']:  # Если есть синтаксическая ошибка
+            self.result_show.setText(str(*rez))  # Выводим "ERROR" на экран
+        elif float(*rez) == int(*rez):  # При отсутсвии какого-либо действия с чеслом
+            self.result_show.setText(str(int(*rez)))  # выводим это же число на экран
+        else:
+            self.result_show.setText(str(*rez))  # Выводим  ответ на экран
+
+    def clear(self, rez):  # очистка дисплейчика
         if rez:  # функция AC
             self.result_show.setText("")
         else:  # функция del
@@ -102,7 +117,10 @@ class CalculationClass:  # класс вычисляющий значения
                 result = self.fast_degree(val1, val2)
             else:
                 result = val1 ** val2
-        return self.round(result)
+        if result == int(result):  # Убираем ненужный 0 при выводе целого числа
+            return int(result)
+        else:
+            return self.round(result)
 
     def hard_function(self, val3, operator):  # вычисляем значения выражений с одной переменной
         if operator == 'sin':
@@ -113,6 +131,16 @@ class CalculationClass:  # класс вычисляющий значения
             result = math.tan(math.radians(val3))
         if operator == 'ctg':
             result = 1 / math.tan(math.radians(val3))  # radians - перевод из градусов в радианы
+
+        if operator == 'arccos':
+            result = math.acos(val3)
+        if operator == 'arcsin':
+            result = math.asin(val3)
+        if operator == 'arctg':
+            result = math.atan(val3)
+        if operator == 'arcctg':
+            result = (math.pi / 2) - math.atan(val3)
+
         if operator == '!':
             result = math.factorial(val3)
         if operator == '%':
@@ -169,7 +197,7 @@ class ReversePolishNotationClass:
                         self.total.append(self.stack.pop())
                     self.stack.pop()
                     if len(self.stack) > 0:
-                        if self.stack[-1] in 'sin tg ctg cos √':
+                        if self.stack[-1] in 'sin tg ctg cos √ arcsin arccos arctg arcctg':
                             self.total.append(self.stack.pop())
                 elif i in '*/^' and len(self.stack) != 0:
                     if self.stack[-1] in '*/^':
@@ -179,7 +207,7 @@ class ReversePolishNotationClass:
                         self.stack.append(i)
                 elif i in '! %':
                     self.total.append(i)
-                elif i in 'sin tg ctg cos √':
+                elif i in 'sin tg ctg cos √ arcsin arccos arctg arcctg':
                     self.stack.append(i)
                 else:
                     self.stack.append(i)
@@ -215,7 +243,8 @@ class ReaderClass(CalculationClass):
                         self.RPN.pop(i - 2)
                         self.RPN.insert(i - 2, self.prime_function(self.val1, self.val2, self.operator))
                         i -= 2
-                    elif self.RPN[i] in 'sin cos tg ctg √ ! %':  # вычисляем значения выражений с одной переменной
+                    elif self.RPN[i] in 'sin cos tg ctg √ ! % ' \
+                                        'arcsin arccos arctg arcctg':  # вычисляем значения выражений с одной переменной
                         self.val3 = self.RPN[i - 1]
                         self.operator = self.RPN[i]
                         self.RPN.pop(i)
