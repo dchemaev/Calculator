@@ -69,8 +69,10 @@ class Main(QMainWindow):
         expression.set_expression(text)  # в список кладем выражение на ОПН
         rez = expression.reader()  # читаем, по ходу чтения вычисляем значеия действий
 
-        if rez == ['ERROR']:  # Если есть синтаксическая ошибка
+        if rez == ['ERROR']:  # Если есть вычислительная ошибка
             self.result_show.setText(str(*rez))  # Выводим "ERROR" на экран
+        elif rez == 'Syntax ERROR' or rez == 'ERROR':  # Если есть синтаксическая ошибка
+            self.result_show.setText(str(rez))  # Выводим "ERROR" на экран
         elif float(*rez) == int(*rez):  # При отсутсвии какого-либо действия с чеслом
             self.result_show.setText(str(int(*rez)))  # выводим это же число на экран
         else:
@@ -101,26 +103,26 @@ class CalculationClass:  # класс вычисляющий значения
 
     def prime_function(self, val1, val2, operator):  # вычисляем значения выражений с двумя переменными
         result = 0
-        if operator == '+':
-            result = val1 + val2
-        elif operator == '-':
-            result = val1 - val2
-        elif operator == '/':
-            if val2 == 0:
-                return 'ERROR'
-            else:
+        try:
+            if operator == '+':
+                result = val1 + val2
+            elif operator == '-':
+                result = val1 - val2
+            elif operator == '/':
                 result = val1 / val2
-        elif operator == '*':
-            result = val1 * val2
-        elif operator == '^':
-            if val2 == abs(int(val2)):
-                result = self.fast_degree(val1, val2)
+            elif operator == '*':
+                result = val1 * val2
+            elif operator == '^':
+                if val2 == abs(int(val2)):
+                    result = self.fast_degree(val1, val2)
+                else:
+                    result = val1 ** val2
+            if result == int(result):  # Убираем ненужный 0 при выводе целого числа
+                return int(result)
             else:
-                result = val1 ** val2
-        if result == int(result):  # Убираем ненужный 0 при выводе целого числа
-            return int(result)
-        else:
-            return self.round(result)
+                return self.round(result)
+        except Exception:
+            return "ERROR"
 
     def hard_function(self, val3, operator):  # вычисляем значения выражений с одной переменной
         if operator == 'sin':
