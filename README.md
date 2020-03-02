@@ -1,7 +1,6 @@
 # Calculator
-Just a Calculator
 
-Calculator with basic functions
+Calculator with basic function.
 Works on Python, using QT
 
 still in progress...
