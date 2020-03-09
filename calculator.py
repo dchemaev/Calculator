@@ -1,29 +1,14 @@
 import sys
 import math
 from PyQt5 import uic
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog
-from PyQt5 import QtCore, QtWidgets
-
-
-class NumSysClass(QMainWindow):
-    def __init__(self, parent=None):
-        super().__init__(parent, QtCore.Qt.Window)
-        self.initUI()
-
-    def initUI(self):
-        uic.loadUi("NumSystem.ui", self)
-
+from PyQt5.QtWidgets import QMainWindow, QApplication
 
 
 class Main(QMainWindow):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.secondWin = None
-
+    def __init__(self):
+        super().__init__()
+        uic.loadUi("calculatorDesign.ui", self)
         self.initUI()
-        self.setWindowIcon(QIcon("Images/calc_Icon.png"))
-
         self.pushButton_0.clicked.connect(lambda: self.display("0"))
         self.pushButton_1.clicked.connect(lambda: self.display("1"))
         self.pushButton_2.clicked.connect(lambda: self.display("2"))
@@ -67,14 +52,6 @@ class Main(QMainWindow):
 
         self.pushButton_del.clicked.connect(lambda: self.clear(True))  # Нужно сделать очистку экрана
         self.pushButton_del_2.clicked.connect(lambda: self.clear(False))
-
-        self.pushButton_NumSysCalc.clicked.connect(self.openWindow)
-
-    def openWindow(self):
-        if not self.secondWin:
-            self.secondWin = NumSysClass(self)
-        self.secondWin.setWindowIcon(QIcon("Images/calc_Icon.png"))
-        self.secondWin.show()
 
     def initUI(self):
         uic.loadUi("calculatorDesign.ui", self)
