@@ -5,7 +5,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from PyQt5 import QtCore
 
-from Calculator.Python_files.Calculation import *
+from Calculation import *
 
 
 class MainWindow(QMainWindow):
