@@ -7,6 +7,8 @@ from PyQt5 import QtCore
 
 from Calculation import *
 
+from Calculator.Calculation import ReversePolishNotationClass, ReaderClass
+
 
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
