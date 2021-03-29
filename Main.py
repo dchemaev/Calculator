@@ -3,12 +3,11 @@ from PyQt5.QtCore import Qt
 from PyQt5 import uic
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QApplication
-from PyQt5 import QtCore, QtGui, QtWidgets
 
 from Calculation import *
-from NumSysCalc import NumSysCalculation
+from NumSysCalc import *
 
-from Calculator.Calculation import ReversePolishNotationClass
+from Calculation import ReversePolishNotationClass
 
 
 class MainWindow(QMainWindow):
@@ -108,6 +107,12 @@ class MainWindow(QMainWindow):
             self.display(' * ')
         if event.key() == Qt.Key_Period or event.key() == Qt.Key_Comma:
             self.display('.')
+        if event.key() == Qt.Key_ParenLeft:
+            self.display(' ( ')
+        if event.key() == Qt.Key_ParenRight:
+            self.display(' ) ')
+        if event.key() == Qt.Key_Equal or event.key() == Qt.Key_Enter or event.key() == Qt.Key_Return:
+            self.calculation()
         if event.key() == Qt.Key_Delete:
             self.clear(True)
         if event.key() == Qt.Key_Backspace:
@@ -165,61 +170,78 @@ class NumSystemWindow(QMainWindow):
         self.pushButton_7.clicked.connect(lambda: self.display("7"))
         self.pushButton_8.clicked.connect(lambda: self.display("8"))
         self.pushButton_9.clicked.connect(lambda: self.display("9"))
+        self.pushButton_A.clicked.connect(lambda: self.display("A"))
+        self.pushButton_B.clicked.connect(lambda: self.display("B"))
+        self.pushButton_C.clicked.connect(lambda: self.display("C"))
+        self.pushButton_D.clicked.connect(lambda: self.display("D"))
+        self.pushButton_E.clicked.connect(lambda: self.display("E"))
+        self.pushButton_F.clicked.connect(lambda: self.display("F"))
 
         self.pushButton_OK.clicked.connect(self.do)
-        self.import_display.setReadOnly(True)
-        self.export_display.setReadOnly(True)
 
         self.pushButton_AC.clicked.connect(lambda: self.clear(True))  # кнопка AC
         self.pushButton_del.clicked.connect(lambda: self.clear(False))  # кнопка del
 
+    def keyPressEvent(self, event):  # интеграция окна калькулятора с клавиатурой и NumPad
+        if event.key() == Qt.Key_1:
+            self.display('1')
+        if event.key() == Qt.Key_2:
+            self.display('2')
+        if event.key() == Qt.Key_3:
+            self.display('3')
+        if event.key() == Qt.Key_4:
+            self.display('4')
+        if event.key() == Qt.Key_5:
+            self.display('5')
+        if event.key() == Qt.Key_6:
+            self.display('6')
+        if event.key() == Qt.Key_7:
+            self.display('7')
+        if event.key() == Qt.Key_8:
+            self.display('8')
+        if event.key() == Qt.Key_9:
+            self.display('9')
+        if event.key() == Qt.Key_0:
+            self.display('0')
+        if event.key() == Qt.Key_A:
+            self.display('A')
+        if event.key() == Qt.Key_B:
+            self.display('B')
+        if event.key() == Qt.Key_C:
+            self.display('C')
+        if event.key() == Qt.Key_D:
+            self.display('D')
+        if event.key() == Qt.Key_E:
+            self.display('E')
+        if event.key() == Qt.Key_F:
+            self.display('F')
+        if event.key() == Qt.Key_Period or event.key() == Qt.Key_Comma:
+            self.display('.')
+        if event.key() == Qt.Key_Delete:
+            self.clear(True)
+        if event.key() == Qt.Key_Backspace:
+            self.clear(False)
+        if event.key() == Qt.Key_Equal or event.key() == Qt.Key_Enter or event.key() == Qt.Key_Return:
+            self.do()
+
     def check(self):
-        if self.import_rbt_2.isChecked():
-            i = 2
-        if self.import_rbt_3.isChecked():
-            i = 3
-        if self.import_rbt_4.isChecked():
-            i = 4
-        if self.import_rbt_5.isChecked():
-            i = 5
-        if self.import_rbt_6.isChecked():
-            i = 6
-        if self.import_rbt_7.isChecked():
-            i = 7
-        if self.import_rbt_8.isChecked():
-            i = 8
-        if self.import_rbt_9.isChecked():
-            i = 9
-        if self.import_rbt_10.isChecked():
-            i = 10
-
-        if self.export_rbt_2.isChecked():
-            j = 2
-        if self.export_rbt_3.isChecked():
-            j = 3
-        if self.export_rbt_4.isChecked():
-            j = 4
-        if self.export_rbt_5.isChecked():
-            j = 5
-        if self.export_rbt_6.isChecked():
-            j = 6
-        if self.export_rbt_7.isChecked():
-            j = 7
-        if self.export_rbt_8.isChecked():
-            j = 8
-        if self.export_rbt_9.isChecked():
-            j = 9
-        if self.export_rbt_10.isChecked():
-            j = 10
-
-        print(i, j)
-        return i, j
+        i = self.from_box.currentText()
+        j = self.to_box.currentText()
+        return int(i), int(j)
 
     def do(self):
-        text = NumSysCalculation(self.import_display.toPlainText().split())
-        rez = text.calculation(*self.check())
-
-        self.export_display.setText(str(int(*rez)))
+        text = str(*self.import_display.toPlainText().split())
+        i, j = self.check()[0], self.check()[1]
+        if i != 16:
+            for l in text:
+                if l in "ABCDEF" or int(l) >= i:
+                    self.export_display.setText("Ошибка. Исходное число не является 2-ичным числом " \
+                                                "(символы в числе должны быть от 0 до {})".format(i - 1))
+        elif i == j:
+            self.export_display.setText(text)
+        else:
+            rez = convert_base(text, to_base=j, from_base=i)  # self.check() == [i, j]
+            self.export_display.setText(str(rez))
 
     def initUI(self):
         uic.loadUi("UI/NumSystem.ui", self)

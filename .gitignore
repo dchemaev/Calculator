@@ -3,3 +3,4 @@
 *.iml
 /venv/
 /.idea/
+__pycache__/NumSysCalc.cpython-38.pyc
