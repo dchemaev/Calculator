@@ -1,6 +1,5 @@
 def convert_base(num, to_base=10, from_base=10):
         # first convert to decimal number
-        print(num, from_base, to_base, "NTF")
         if isinstance(num, str):
             n = int(num, from_base)
         else:

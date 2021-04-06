@@ -235,7 +235,6 @@ class NumSystemWindow(QMainWindow):
         check = 0
         if i != 16:
             for l in text:
-                print(l)
                 if l in "ABCDEF" or int(l) >= i:
                     self.export_display.setText("Ошибка. Исходное число не является 2-ичным числом " \
                                                 "(символы в числе должны быть от 0 до {})".format(i - 1))
@@ -245,7 +244,6 @@ class NumSystemWindow(QMainWindow):
             rez = convert_base(text, to_base=j, from_base=i)  # self.check() == [i, j]
             self.export_display.setText(str(rez))
             check = 0
-
 
     def initUI(self):
         uic.loadUi("UI/NumSystem.ui", self)
